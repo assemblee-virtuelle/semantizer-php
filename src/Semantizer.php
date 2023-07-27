@@ -32,9 +32,9 @@ class Semantizer {
         $this->store = new Store();
     }
 
-    public function export(Array $semanticObjects): string {
+    public function export(Array $semanticObjects, Array $context = null): string {
         $graph = $this->merge($semanticObjects);
-        return $graph->serialise('jsonld', ["compact" => true]);
+        return $graph->serialise('jsonld', ["compact" => true, "context" => $context]);
     }
 
     public function fetch(string $semanticObjectId): Semanticable {
