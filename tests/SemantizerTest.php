@@ -7,7 +7,7 @@ final class SemantizerTest extends TestCase
 {
     public function testExport(): void {
         $semantizer = new Semantizer();
-        \EasyRdf\RdfNamespace::set("dfc", "https://github.com/datafoodconsortium/ontology/releases/latest/download/DFC_BusinessOntology.owl#");
+        $semantizer->setPrefix("dfc", "https://github.com/datafoodconsortium/ontology/releases/latest/download/DFC_BusinessOntology.owl#");
 
         $context = ["https://www.datafoodconsortium.org"];
 

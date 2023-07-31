@@ -41,6 +41,10 @@ class Semantizer {
         return $this->store->get($semanticObjectId);
     }
 
+    public function setPrefix(string $prefix, string $uri): void {
+        \EasyRdf\RdfNamespace::set($prefix, $uri);
+    }
+
     public function store(Semanticable $semanticable): void {
         $this->store->set($semanticable);
     }
