@@ -54,8 +54,6 @@ class Semantizer {
         return $this->store->get($semanticObjectId);
     }
 
-<<<<<<< Updated upstream
-=======
     public function shorten(string $uri): string {
         $shorten = \EasyRdf\RdfNamespace::shorten($uri);
         return $shorten? $shorten: $uri;
@@ -73,7 +71,6 @@ class Semantizer {
         \EasyRdf\RdfNamespace::set($prefix, $uri);
     }
 
->>>>>>> Stashed changes
     public function store(Semanticable $semanticable): void {
         $this->store->set($semanticable);
     }
