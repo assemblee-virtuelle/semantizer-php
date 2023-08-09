@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f75ca60bbb9a9dbbb741eb4a96e422b",
+    "content-hash": "9ce016f4776daeb38170b449c3585e01",
     "packages": [
         {
             "name": "ml/iri",
@@ -246,21 +246,21 @@
         },
         {
             "name": "sweetrdf/rdf-helpers",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/rdfHelpers.git",
-                "reference": "e0ae1d528766aae4c3bfa9e4312f02efbb6830b5"
+                "reference": "b1d1b6084a10815bfdbc7afecaa6d5c2d0f0b4f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/rdfHelpers/zipball/e0ae1d528766aae4c3bfa9e4312f02efbb6830b5",
-                "reference": "e0ae1d528766aae4c3bfa9e4312f02efbb6830b5",
+                "url": "https://api.github.com/repos/sweetrdf/rdfHelpers/zipball/b1d1b6084a10815bfdbc7afecaa6d5c2d0f0b4f7",
+                "reference": "b1d1b6084a10815bfdbc7afecaa6d5c2d0f0b4f7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.0",
-                "sweetrdf/rdf-interface": "^1.0.0",
+                "sweetrdf/rdf-interface": "^1 | ^2.0.0-RC1",
                 "zozlak/rdf-constants": "^1.1"
             },
             "require-dev": {
@@ -290,9 +290,9 @@
             "homepage": "https://github.com/sweetrdf/rdfHelpers",
             "support": {
                 "issues": "https://github.com/sweetrdf/rdfHelpers/issues",
-                "source": "https://github.com/sweetrdf/rdfHelpers/tree/1.0.1"
+                "source": "https://github.com/sweetrdf/rdfHelpers/tree/1.0.2"
             },
-            "time": "2023-04-02T08:59:30+00:00"
+            "time": "2023-07-26T13:41:01+00:00"
         },
         {
             "name": "sweetrdf/rdf-interface",
