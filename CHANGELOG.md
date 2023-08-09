@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-alpha3] - 2023-08-09
+
+### Fixed
+
+- Method `SemanticObject::setSemanticProperty` allows to set blank node.
+
+### Added
+
+- Interface `IFactory`.
+- Method `Semantizer::getPrefix`.
+- Method `Semantizer::shorten`.
+- Method `Semantizer::expand`.
+- Class `Factory` in test.
+- Class `SemanticObjectAnonymousSub` in test.
+
+### Changed
+
+- Rename tests folder to "test".
+### Removed
+
+- Dependency to phpunit (to avoid potential conflicts as suggested in the official documentation).
+
 ## [1.0.0-alpha2] - 2023-07-31
 
 ### Added

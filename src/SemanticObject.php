@@ -165,8 +165,15 @@ class SemanticObject implements Semanticable {
     }
 
     public function setSemanticProperty(string $name, mixed $newValue, mixed $oldValue = null): void {
-        if ($newValue instanceof SemanticObject)
+        $isBlankNode = $newValue instanceof SemanticObjectAnonymous;
+
+        if ($newValue instanceof SemanticObject || $isBlankNode) {
             $newValue = $newValue->getResource();
+        }
+
+        if ($isBlankNode)
+            $this->makeBlankNode($newValue);
+
         $this->graph->set($this->getResource(), $name, $newValue);
     }
 

@@ -3,6 +3,8 @@
 namespace VirtualAssembly\Semantizer;
 use PHPUnit\Framework\TestCase;
 
+require_once(__DIR__ . "/../vendor/autoload.php");
+
 final class SemantizerTest extends TestCase
 {
     public function testExport(): void {

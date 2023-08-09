@@ -3,6 +3,9 @@
 namespace VirtualAssembly\Semantizer;
 use PHPUnit\Framework\TestCase;
 
+require_once(__DIR__ . "/../vendor/autoload.php");
+require_once(__DIR__ . "/Factory.php");
+
 final class SemanticObjectTest extends TestCase
 {
     public function testGetSemanticIdAndType(): void {
@@ -156,6 +159,18 @@ final class SemanticObjectTest extends TestCase
         $this->assertSame(2, count($properties));
         $this->assertSame(true, $so2->equals($properties[0]));
         $this->assertSame(true, $so3->equals($properties[1]));
+    }
+
+    public function testSemanticPropertyReferenceSub(): void {
+        $semantizer = new Semantizer();
+        $factory = new Factory($semantizer);
+        $semantizer->setFactory($factory);
+
+        $so = new SemanticObject($semantizer, "http://example.org/ex", "foaf:Person");
+        $soA = new SemanticObjectAnonymousSub($semantizer);
+        $so->setSemanticProperty("foaf:test", $soA);
+
+        $this->assertSame(true, $so->getSemanticProperty("foaf:test")->equals($soA));
     }
 
     public function testEquals(): void {
