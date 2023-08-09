@@ -27,9 +27,22 @@ namespace VirtualAssembly\Semantizer;
 class Semantizer {
 
     private IStore $store;
+    private IFactory $factory;
 
-    public function __construct() {
+    public function __construct(IFactory $factory = null) {
         $this->store = new Store();
+        if ($factory) $this->setFactory($factory);
+    }
+
+    public function setFactory(IFactory $factory) {
+        $this->factory = $factory;
+    }
+
+    public function getFactory(): IFactory {
+        if (!isset($this->factory))
+            throw new \Error("Uninitialized factory.");
+
+        return $this->factory;
     }
 
     public function export(Array $semanticObjects, Array $context = null): string {
@@ -41,6 +54,26 @@ class Semantizer {
         return $this->store->get($semanticObjectId);
     }
 
+<<<<<<< Updated upstream
+=======
+    public function shorten(string $uri): string {
+        $shorten = \EasyRdf\RdfNamespace::shorten($uri);
+        return $shorten? $shorten: $uri;
+    }
+
+    public function expand(string $uri): string {
+        return \EasyRdf\RdfNamespace::expand($uri);
+    }
+
+    public function getPrefix(string $uri): string {
+        return \EasyRdf\RdfNamespace::prefixOfUri($uri);
+    }
+
+    public function setPrefix(string $prefix, string $uri): void {
+        \EasyRdf\RdfNamespace::set($prefix, $uri);
+    }
+
+>>>>>>> Stashed changes
     public function store(Semanticable $semanticable): void {
         $this->store->set($semanticable);
     }

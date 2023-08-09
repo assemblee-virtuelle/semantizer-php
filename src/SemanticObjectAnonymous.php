@@ -44,7 +44,12 @@ class SemanticObjectAnonymous extends SemanticObject {
         if (!$type || !$resource->isBNode())
             return null;
 
-        $result = new SemanticObjectAnonymous($semantizer, $type);
+        try {
+            $result = $semantizer->getFactory()->make($type);
+        }
+        catch(\Error $e) {
+            $result = new SemanticObjectAnonymous($semantizer, \EasyRdf\RdfNamespace::expand($type));
+        }
 
         foreach ($resource->propertyUris() as $prop) {
             foreach ($resource->all(\EasyRdf\RdfNamespace::shorten($prop)) as $value) {
