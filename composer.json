@@ -1,7 +1,6 @@
 {
     "name": "virtual-assembly/semantizer",
     "type": "library",
-    "version": "1.0.0-alpha3",
     "description": "A library to enhance your object model with semantic data.",
     "keywords": ["semantic web","rdf","object model"],
     "homepage": "https://github.com/assemblee-virtuelle/semantizer-php",
