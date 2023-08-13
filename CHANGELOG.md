@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Rename method `IFactory:make` to `makeFromResource`.
+
+### Added
+
+- Add a resource parameter in the `SemanticObject` constructor.
+- Add the `Semantizer:import` method.
+
+### Removed
+
+- Method `SemanticObjectAnonymous:makeFromResource` (moved into the `SemanticObject` constructor).
+
 ## [1.0.0-alpha4] - 2023-08-13
 
 ### Fixed

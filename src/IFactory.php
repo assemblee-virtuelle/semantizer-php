@@ -27,10 +27,11 @@ namespace VirtualAssembly\Semantizer;
 interface IFactory {
 
     /** 
-     * Make a new Semanticable object given its type.
-     * @param $type The full URI of the semantic type.
-     * @return The new Semanticable object if type is found or null otherwise.
+     * Make a new Semanticable object from a resource.
+     * @param $resource The \EasyRdf\Resource to make the new object from.
+     * @return The new Semanticable object.
+     * @throws \TypeError when the type of the resource is unknown.
      */
-    public function make(string $type): Semanticable;
+    public function makeFromResource(\EasyRdf\Resource $resource): Semanticable;
     
 }

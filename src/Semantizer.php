@@ -50,6 +50,24 @@ class Semantizer {
         return $graph->serialise('jsonld', ["compact" => true, "context" => $context]);
     }
 
+    public function import(string $data, string $baseUri = null): Array {
+        $result = array();
+        $parser = new \EasyRdf\Parser\JsonLd();
+        $graph = new \EasyRdf\Graph();
+        $parser->parse($graph, $data, 'jsonld', $baseUri);
+
+        foreach ($graph->resources() as $resource) {
+            try {
+                array_push($result, $this->getFactory()->makeFromResource($resource));
+            }
+            catch (\TypeError $e) {
+                //echo $e->getMessage();
+            }
+        }
+        
+        return $result;
+    }
+
     public function fetch(string $semanticObjectId): Semanticable {
         return $this->store->get($semanticObjectId);
     }

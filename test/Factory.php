@@ -11,8 +11,10 @@ class Factory implements IFactory {
         $this->semantizer = $semantizer;
     }
 
-    public function make(string $type): Semanticable {
+    public function makeFromResource(\EasyRdf\Resource $resource): Semanticable {
+        $type = $resource->type();
         if ($type === "foaf:testType") return new SemanticObjectAnonymousSub($this->semantizer);
+        if ($type === "foaf:Person") return new SemanticObjectAnonymous(semantizer: $this->semantizer, resource: $resource);
         return null;
     }
 }

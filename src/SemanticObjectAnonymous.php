@@ -26,8 +26,11 @@ namespace VirtualAssembly\Semantizer;
 
 class SemanticObjectAnonymous extends SemanticObject {
 
-    public function __construct(Semantizer $semantizer, string $semanticType) {
-        parent::__construct($semantizer, "", $semanticType, true);
+    public function __construct(Semantizer $semantizer, \EasyRdf\Resource $resource = null, string $semanticType = null) {
+        parent::__construct(semantizer: $semantizer, resource: $resource, semanticId: "", semanticType: $semanticType, doNotStore: true);
+
+        if ($resource && !$resource->isBNode())
+            throw new \TypeError("To make a SemanticObjectAnonymous from a resource, it must be a blank node.", 404);
     }
 
     protected function createResource(\EasyRdf\Graph $graph, string $semanticId): \EasyRdf\Resource {
@@ -37,39 +40,5 @@ class SemanticObjectAnonymous extends SemanticObject {
     public function isBlankNode(): bool {
         return true;
     }
-
-    /**
-     * This function will create a new concreate Semanticable (SemanticObjectAnonymous)
-     * by copying the passed in blank node resource.
-     */
-    public static function makeFromResource(Semantizer $semantizer, \EasyRdf\Resource $resource): SemanticObjectAnonymous {
-        $type = $resource->type();
-
-        if (!$type || !$resource->isBNode())
-            return null;
-
-        try {
-            $result = $semantizer->getFactory()->make($type);
-        }
-        catch(\Error $e) {
-            $result = new SemanticObjectAnonymous($semantizer, \EasyRdf\RdfNamespace::expand($type));
-        }
-
-        foreach ($resource->propertyUris() as $prop) {
-            foreach ($resource->all(\EasyRdf\RdfNamespace::shorten($prop)) as $value) {
-                if ($value instanceof \EasyRdf\Resource) {
-                    $result->getResource()->addResource($prop, $value);
-                    // TODO: here we have to know if the resource must be fetched from
-                    // the store to be instanciated as a SemanticObject. We could test 
-                    // if its URI includes the DFC prefix.
-                    //$semanticObject = $semantizer->fetch($value->getUri());
-                    //$result->addSemanticPropertyReference($prop, $semanticObject);
-                }
-                else $result->addSemanticPropertyLiteral($prop, $value);
-            }
-        }
-
-        return $result;
-    }
-    
+   
 }

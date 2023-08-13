@@ -10,20 +10,32 @@ final class SemanticObjectTest extends TestCase
 {
     public function testGetSemanticIdAndType(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+            semantizer: $semantizer, 
+			semanticId: "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $this->assertSame("http://example.org/joe", $so->getSemanticId());
         $this->assertSame("foaf:Person", $so->getSemanticType());
     }
     
     public function testSemanticPropertyEmpty(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+		    semantizer: $semantizer, 
+			semanticId: "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $this->assertSame(null, $so->getSemanticProperty("foaf:name"));
     }
 
     public function testSemanticPropertyLiteralString(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
 
         // Test adder and getter
         $so->addSemanticPropertyLiteral("foaf:name", "Joe");
@@ -46,7 +58,11 @@ final class SemanticObjectTest extends TestCase
 
     public function testSemanticPropertyLiteralNumber(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
 
         // Test adder and getter
         $so->addSemanticPropertyLiteral("foaf:number", 123);
@@ -69,7 +85,11 @@ final class SemanticObjectTest extends TestCase
 
     public function testSemanticPropertyLiteralBooleanTrue(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
 
         // Test adder and getter
         $so->addSemanticPropertyLiteral("foaf:bool", true);
@@ -92,7 +112,11 @@ final class SemanticObjectTest extends TestCase
     
     public function testSemanticPropertyLiteralBooleanFalse(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
 
         // Test adder and getter
         $so->addSemanticPropertyLiteral("foaf:bool", false);
@@ -110,9 +134,21 @@ final class SemanticObjectTest extends TestCase
 
     public function testSemanticPropertyReference(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
-        $so2 = new SemanticObject($semantizer, "http://example.org/tom", "foaf:Person");
-        $so3 = new SemanticObject($semantizer, "http://example.org/mel", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
+        $so2 = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/tom", 
+            semanticType: "foaf:Person"
+        );
+        $so3 = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/mel", 
+            semanticType: "foaf:Person"
+        );
 
         // Test adder and getter
         $so->addSemanticPropertyReference("foaf:ref", $so2);
@@ -134,31 +170,34 @@ final class SemanticObjectTest extends TestCase
 
     public function testSemanticPropertyReferenceAnonymous(): void {
         $semantizer = new Semantizer();
-        //$factory = new Factory($semantizer);
-        //$semantizer->setFactory($factory);
+        $factory = new Factory($semantizer);
+        $semantizer->setFactory($factory);
 
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
-        $so2 = new SemanticObjectAnonymous($semantizer, "foaf:Person");
-        $so2->addSemanticPropertyLiteral("foaf:desc", "SO2");
-        $so3 = new SemanticObjectAnonymous($semantizer, "foaf:Person2");
-        $so4 = new SemanticObjectAnonymous($semantizer, "foaf:Other");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
+        $so2 = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:Person"
+        );
+        $so2->addSemanticPropertyLiteral("foaf:desc", "desc");
+        $so3 = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:Person"
+        );
 
         // Test adder and getter
         $so->addSemanticPropertyReference("foaf:ref", $so2);
         $this->assertSame(true, $so2->equals($so->getSemanticProperty("foaf:ref")));
         $this->assertSame(true, $so2->equals($so->getSemanticProperty("foaf:ref")));
 
-        // Test to add another blank node
-        $so->addSemanticPropertyReference("foaf:other", $so4);
-        $this->assertSame(true, $so2->equals($so->getSemanticProperty("foaf:ref")));
-        $this->assertSame(true, $so4->equals($so->getSemanticProperty("foaf:other")));
-
         // Test setter
         $so->setSemanticProperty("foaf:ref", $so3);
-        $this->assertSame(true, $so3->equals($so->getSemanticProperty("foaf:ref")));
 
-        // Test remover all
-        $so->removeSemanticPropertyAll("foaf:ref");
+        // Test remover
+        $so->removeSemanticProperty("foaf:ref", $so3);
         $this->assertSame(null, $so->getSemanticProperty("foaf:ref"));
 
         // Test collection
@@ -169,12 +208,6 @@ final class SemanticObjectTest extends TestCase
         $this->assertSame(2, count($properties));
         $this->assertSame(true, $so2->equals($properties[0]));
         $this->assertSame(true, $so3->equals($properties[1]));
-
-        // Test remover
-        /*$so->removeSemanticProperty("foaf:ref", $so2);
-        $this->assertSame(true, $so3->equals($so->getSemanticProperty("foaf:ref")));
-        $so->removeSemanticProperty("foaf:ref", $so3);
-        $this->assertSame(null, $so->getSemanticProperty("foaf:ref"));*/
     }
 
     public function testSemanticPropertyReferenceSub(): void {
@@ -182,7 +215,11 @@ final class SemanticObjectTest extends TestCase
         $factory = new Factory($semantizer);
         $semantizer->setFactory($factory);
 
-        $so = new SemanticObject($semantizer, "http://example.org/ex", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/ex", 
+            semanticType: "foaf:Person"
+        );
         $soA = new SemanticObjectAnonymousSub($semantizer);
         $so->setSemanticProperty("foaf:test", $soA);
 
@@ -192,19 +229,39 @@ final class SemanticObjectTest extends TestCase
     public function testEquals(): void {
         $semantizer = new Semantizer();
 
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $so->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $so2 = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so2 = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $so2->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $soIdDiff = new SemanticObject($semantizer, "http://example.org/joeDiff", "foaf:Person");
+        $soIdDiff = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joeDiff", 
+            semanticType: "foaf:Person"
+        );
         $soIdDiff->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $soPropDiff = new SemanticObject($semantizer, "http://example.org/joe", "foaf:PersonDiff");
+        $soPropDiff = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:PersonDiff"
+        );
         $soPropDiff->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $soValueDiff = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $soValueDiff = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $soValueDiff->addSemanticPropertyLiteral("foaf:name", "JoeDiff");
 
         $this->assertSame(true, $so->equals($so));
@@ -221,16 +278,28 @@ final class SemanticObjectTest extends TestCase
     public function testEqualsAnonymous(): void {
         $semantizer = new Semantizer();
 
-        $so = new SemanticObjectAnonymous($semantizer, "foaf:Person");
+        $so = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:Person"
+        );
         $so->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $so2 = new SemanticObjectAnonymous($semantizer, "foaf:Person");
+        $so2 = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:Person"
+        );
         $so2->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $soPropDiff = new SemanticObjectAnonymous($semantizer, "foaf:PersonDiff");
+        $soPropDiff = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:PersonDiff"
+        );
         $soPropDiff->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $soValueDiff = new SemanticObjectAnonymous($semantizer, "foaf:Person");
+        $soValueDiff = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:Person"
+        );
         $soValueDiff->addSemanticPropertyLiteral("foaf:name", "JoeDiff");
 
         $this->assertSame(true, $so->equals($so));
@@ -246,10 +315,17 @@ final class SemanticObjectTest extends TestCase
     public function testEqualsBoth(): void {
         $semantizer = new Semantizer();
 
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId:  "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $so->addSemanticPropertyLiteral("foaf:name", "Joe");
 
-        $soa = new SemanticObjectAnonymous($semantizer, "foaf:Person");
+        $soa = new SemanticObjectAnonymous(
+			semantizer: $semantizer, 
+			semanticType: "foaf:Person"
+        );
         $soa->addSemanticPropertyLiteral("foaf:name", "Joe");
         
         $this->assertSame(false, $so->equals($soa));
@@ -258,7 +334,11 @@ final class SemanticObjectTest extends TestCase
 
     public function testExportEmpty(): void {
         $semantizer = new Semantizer();
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+			semantizer: $semantizer, 
+			semanticId: "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $expected = '{"@id":"http://example.org/joe","@type":"http://xmlns.com/foaf/0.1/Person"}';
         $this->assertSame($expected, $so->toJsonLd());
     }

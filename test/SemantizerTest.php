@@ -13,11 +13,19 @@ final class SemantizerTest extends TestCase
 
         $context = ["https://www.datafoodconsortium.org"];
 
-        $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
+        $so = new SemanticObject(
+            semantizer: $semantizer, 
+            semanticId: "http://example.org/joe", 
+            semanticType: "foaf:Person"
+        );
         $so->addSemanticPropertyLiteral("foaf:name", "Joe");
         $so->addSemanticPropertyLiteral("dfc:description", "Description");
 
-        $so2 = new SemanticObject($semantizer, "http://example.org/tom", "foaf:Person");
+        $so2 = new SemanticObject(
+            semantizer: $semantizer, 
+            semanticId: "http://example.org/tom", 
+            semanticType: "foaf:Person"
+        );
         $so2->addSemanticPropertyLiteral("foaf:name", "Tom");
 
         $expected = '{"@context":["https://www.datafoodconsortium.org"],"@graph":[{"@id":"http://example.org/joe","@type":"http://xmlns.com/foaf/0.1/Person","http://xmlns.com/foaf/0.1/name":"Joe","dfc-b:description":"Description"},{"@id":"http://example.org/tom","@type":"http://xmlns.com/foaf/0.1/Person","http://xmlns.com/foaf/0.1/name":"Tom"}]}';

@@ -29,11 +29,37 @@ class SemanticObject implements Semanticable {
     private \EasyRdf\Graph $graph;
     private \EasyRdf\Resource $resource;
 
-    public function __construct(Semantizer $semantizer, string $semanticId, string $semanticType, bool $doNotStore = false) {
+    public function __construct(Semantizer $semantizer, \EasyRdf\Resource $resource = null, string $semanticId = null, string $semanticType = null, bool $doNotStore = false) {
         $this->semantizer = $semantizer;
         $this->graph = new \EasyRdf\Graph();
-        $this->resource = $this->createResource($this->graph, $semanticId);
-        $this->resource->setType($semanticType);
+
+        if ($resource) {
+            // We create a new Semanticable by copying the passed in resource.
+            $this->resource = $this->createResource($this->graph, $resource->getUri());
+            foreach ($resource->propertyUris() as $prop) {
+                foreach ($resource->all(\EasyRdf\RdfNamespace::shorten($prop)) as $value) {
+                    if ($value instanceof \EasyRdf\Resource) {
+                        $this->getResource()->addResource($prop, $value);
+                        // TODO: here we have to know if the resource must be fetched from
+                        // the store to be instanciated as a SemanticObject. We could test 
+                        // if its URI includes the DFC prefix.
+                        //$semanticObject = $semantizer->fetch($value->getUri());
+                        //$result->addSemanticPropertyReference($prop, $semanticObject);
+                    }
+                    else $this->addSemanticPropertyLiteral($prop, $value);
+                }
+            }
+            $this->resource = $resource;
+        }
+
+        else {
+            if ($semanticId === null)
+                throw new \Error("When creating an object, one must provide its id.");
+            if (!$semanticType)
+                throw new \Error("When creating an object, one must provide its type.");
+            $this->resource = $this->createResource($this->graph, $semanticId);
+            $this->resource->setType($semanticType);
+        }
 
         if (!$doNotStore)
             $semantizer->store($this);
@@ -96,7 +122,7 @@ class SemanticObject implements Semanticable {
     }
 
     private function makeAnonymous(\EasyRdf\Resource $resource): SemanticObjectAnonymous {
-        return SemanticObjectAnonymous::makeFromResource($this->getSemantizer(), $resource);
+        return $this->getSemantizer()->getFactory()->makeFromResource($resource);
     }
 
     private function fetch(string $uri): Semanticable {
