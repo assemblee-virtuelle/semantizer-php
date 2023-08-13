@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-alpha4] - 2023-08-13
+
+### Fixed
+
+- Method `SemanticObject::setSemanticProperty` does add the blank node in the graph.
+
+### Added
+
+- Method `Semanticable:removeSemanticPropertyAll`.
+- Method `SemanticObject:removeSemanticPropertyAll`.
+
 ## [1.0.0-alpha3] - 2023-08-09
 
 ### Fixed
@@ -40,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha2...HEAD
+[unreleased]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha4...HEAD
+[1.0.0-alpha4]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha3...v1.0.0-alpha4
+[1.0.0-alpha3]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha2...v1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha1...v1.0.0-alpha2
 [1.0.0-alpha1]: https://github.com/assemblee-virtuelle/semantizer-php/releases/tag/v1.0.0-alpha1

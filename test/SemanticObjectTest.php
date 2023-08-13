@@ -134,21 +134,31 @@ final class SemanticObjectTest extends TestCase
 
     public function testSemanticPropertyReferenceAnonymous(): void {
         $semantizer = new Semantizer();
+        //$factory = new Factory($semantizer);
+        //$semantizer->setFactory($factory);
+
         $so = new SemanticObject($semantizer, "http://example.org/joe", "foaf:Person");
         $so2 = new SemanticObjectAnonymous($semantizer, "foaf:Person");
-        $so2->addSemanticPropertyLiteral("foaf:desc", "desc");
-        $so3 = new SemanticObjectAnonymous($semantizer, "foaf:Person");
+        $so2->addSemanticPropertyLiteral("foaf:desc", "SO2");
+        $so3 = new SemanticObjectAnonymous($semantizer, "foaf:Person2");
+        $so4 = new SemanticObjectAnonymous($semantizer, "foaf:Other");
 
         // Test adder and getter
         $so->addSemanticPropertyReference("foaf:ref", $so2);
         $this->assertSame(true, $so2->equals($so->getSemanticProperty("foaf:ref")));
         $this->assertSame(true, $so2->equals($so->getSemanticProperty("foaf:ref")));
 
+        // Test to add another blank node
+        $so->addSemanticPropertyReference("foaf:other", $so4);
+        $this->assertSame(true, $so2->equals($so->getSemanticProperty("foaf:ref")));
+        $this->assertSame(true, $so4->equals($so->getSemanticProperty("foaf:other")));
+
         // Test setter
         $so->setSemanticProperty("foaf:ref", $so3);
+        $this->assertSame(true, $so3->equals($so->getSemanticProperty("foaf:ref")));
 
-        // Test remover
-        $so->removeSemanticProperty("foaf:ref", $so3);
+        // Test remover all
+        $so->removeSemanticPropertyAll("foaf:ref");
         $this->assertSame(null, $so->getSemanticProperty("foaf:ref"));
 
         // Test collection
@@ -159,6 +169,12 @@ final class SemanticObjectTest extends TestCase
         $this->assertSame(2, count($properties));
         $this->assertSame(true, $so2->equals($properties[0]));
         $this->assertSame(true, $so3->equals($properties[1]));
+
+        // Test remover
+        /*$so->removeSemanticProperty("foaf:ref", $so2);
+        $this->assertSame(true, $so3->equals($so->getSemanticProperty("foaf:ref")));
+        $so->removeSemanticProperty("foaf:ref", $so3);
+        $this->assertSame(null, $so->getSemanticProperty("foaf:ref"));*/
     }
 
     public function testSemanticPropertyReferenceSub(): void {

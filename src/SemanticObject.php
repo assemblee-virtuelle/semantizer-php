@@ -149,7 +149,7 @@ class SemanticObject implements Semanticable {
     }
 
     public function getSemanticPropertyAll(string $name): Array {
-        $results = $this->graph->all($this->getResource(), $name);
+        $results = $this->getGraph()->all($this->getResource(), $name);
 
         if (empty($results))
             return $results;
@@ -158,9 +158,40 @@ class SemanticObject implements Semanticable {
         return array_reduce($results, $reducer, []);
     }
 
+    /** BUG: when a property is a blank node, we must also delete the 
+     * blank node from the graph. The library does not seem to allow
+     * that.
+     */
+    public function removeSemanticPropertyAll(string $name): void {
+        $this->getGraph()->delete($this->getResource(), $name);
+    }
+
+    /** BUG: when a property is a blank node, we must also delete the 
+     * blank node from the graph. The library does not seem to allow
+     * that.
+     */
     public function removeSemanticProperty(string $name, mixed $value): void {
-        if ($value instanceof SemanticObject)
+        if ($value instanceof SemanticObjectAnonymous) {
+            // As the passed in value is not the same object that is stored in the 
+            // graph (but a copy), we have to find the corresponding object in the 
+            // graph using the equals method.
+            $candidates = $this->getGraph()->allOfType($value->getResource()->type());
+            foreach ($candidates as $candidate) {
+                if ($candidate->isBNode() && $value->equals($this->makeAnonymous($candidate))) {
+                    $value = $candidate;
+                    break; // there can't be multiple equal objects, right?
+                }
+            }
+
+            // If we did not find the blank node we throw an error.
+            if (!$value instanceof \EasyRdf\Resource)
+                throw new Error("Corresponding blank node not found for property: " . $name);
+        }
+        
+        if ($value instanceof SemanticObject) {
             $value = $value->getResource();
+        }
+        
         $this->graph->delete($this->getResource(), $name, $value);
     }
 
@@ -172,7 +203,7 @@ class SemanticObject implements Semanticable {
         }
 
         if ($isBlankNode)
-            $this->makeBlankNode($newValue);
+            $newValue = $this->makeBlankNode($newValue);
 
         $this->graph->set($this->getResource(), $name, $newValue);
     }

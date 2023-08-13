@@ -38,6 +38,10 @@ class SemanticObjectAnonymous extends SemanticObject {
         return true;
     }
 
+    /**
+     * This function will create a new concreate Semanticable (SemanticObjectAnonymous)
+     * by copying the passed in blank node resource.
+     */
     public static function makeFromResource(Semantizer $semantizer, \EasyRdf\Resource $resource): SemanticObjectAnonymous {
         $type = $resource->type();
 

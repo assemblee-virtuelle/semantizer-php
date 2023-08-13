@@ -31,6 +31,7 @@ interface Semanticable {
     public function getSemanticProperty(string $name): mixed;
     public function getSemanticPropertyAll(string $name): Array;
     public function removeSemanticProperty(string $name, mixed $value): void;
+    public function removeSemanticPropertyAll(string $name): void;
     public function setSemanticProperty(string $name, mixed $newValue, mixed $oldValue): void;
 
 }
