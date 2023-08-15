@@ -7,14 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta1] - 2023-08-15
+
 ### Changed
 
 - Rename method `IFactory:make` to `makeFromResource`.
+- The factory can't not be set in the constructor anymore (to avoid a potential circular dependency).
 
 ### Added
 
 - Add a resource parameter in the `SemanticObject` constructor.
-- Add the `Semantizer:import` method.
+- Add the `Semantizer:import` method (to be tested).
+- Add a fetch method (Closure) and a default one (to be tested).
+- Add the `IStore:has` method.
+- Add the `Semantizer:getStore` method.
 
 ### Removed
 
@@ -64,7 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha4...HEAD
+[unreleased]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-beta1...HEAD
+[1.0.0-beta1]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha4...v1.0.0-beta1
 [1.0.0-alpha4]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha3...v1.0.0-alpha4
 [1.0.0-alpha3]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha2...v1.0.0-alpha3
 [1.0.0-alpha2]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha1...v1.0.0-alpha2

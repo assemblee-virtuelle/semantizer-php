@@ -27,6 +27,7 @@ namespace VirtualAssembly\Semantizer;
 interface IStore {
 
     public function get($semanticObjectId): Semanticable;
+    public function has($semanticObjectId): bool;
     public function set(Semanticable $semanticable): void;
 
 }

@@ -28,8 +28,16 @@ class Store implements IStore {
 
     private Array $store;
 
+    public function __construct() {
+        $this->store = array();
+    }
+
     public function get($semanticObjectId): Semanticable {
         return $this->store[$semanticObjectId];
+    }
+
+    public function has($semanticObjectId): bool {
+        return in_array($semanticObjectId, array_keys($this->store));
     }
 
     public function set(Semanticable $semanticable): void {

@@ -1,4 +1,5 @@
 <?php
+
 /*
 Copyright (c) 2023 Maxime Lecoq <maxime@lecoqlibre.fr>
 

@@ -28,10 +28,11 @@ class Semantizer {
 
     private IStore $store;
     private IFactory $factory;
+    private \Closure $fetchFunction;
 
-    public function __construct(IFactory $factory = null) {
+    public function __construct() {
         $this->store = new Store();
-        if ($factory) $this->setFactory($factory);
+        $this->setFetchFunction(); // init the default fetch function
     }
 
     public function setFactory(IFactory $factory) {
@@ -45,12 +46,24 @@ class Semantizer {
         return $this->factory;
     }
 
+    public function setFetchFunction(\Closure $fetchFunction = null) {
+        $this->fetchFunction = $fetchFunction? $fetchFunction: \Closure::fromCallable([$this, 'getDefaultFetchFunction']);
+    }
+
+    public function getFetchFunction(): \Closure {
+        return $this->fetchFunction;
+    }
+
+    public function getStore(): IStore {
+        return $this->store;
+    }
+
     public function export(Array $semanticObjects, Array $context = null): string {
         $graph = $this->merge($semanticObjects);
         return $graph->serialise('jsonld', ["compact" => true, "context" => $context]);
     }
 
-    public function import(string $data, string $baseUri = null): Array {
+    public function import(string $data, string $baseUri = null, Array &$resourceUriThatCantBeImported = array()): Array {
         $result = array();
         $parser = new \EasyRdf\Parser\JsonLd();
         $graph = new \EasyRdf\Graph();
@@ -58,18 +71,30 @@ class Semantizer {
 
         foreach ($graph->resources() as $resource) {
             try {
-                array_push($result, $this->getFactory()->makeFromResource($resource));
+                $semanticable = $this->getFactory()->makeFromResource($resource);
+                array_push($result, $semanticable);
+                $this->getStore()->set($resource->getUri(), $semanticable);
             }
-            catch (\TypeError $e) {
-                //echo $e->getMessage();
+            catch(\TypeError $e) {
+                array_push($resourceUriThatCantBeImported, $resource->getUri());
             }
         }
         
         return $result;
     }
 
+    public function getDefaultfetchFunction(string $semanticObjectId): string {
+        $opts = array('http' => array('method' => "GET", 'header' => "Accept: application/ld+json"));
+        $context = stream_context_create($opts);
+        return file_get_contents($semanticObjectId, false, $context);
+    }
+
     public function fetch(string $semanticObjectId): Semanticable {
-        return $this->store->get($semanticObjectId);
+        if (!$this->getStore()->has($semanticObjectId)) {
+            $jsonld = $this->getFetchFunction()->call($this, $semanticObjectId);
+            $this->import($jsonld);
+        }
+        return $this->getStore()->get($semanticObjectId);
     }
 
     public function shorten(string $uri): string {
