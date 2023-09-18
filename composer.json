@@ -14,7 +14,7 @@
     "require": {
         "php": ">=8.1",
         "ml/json-ld": "^1.2",
-        "sweetrdf/easyrdf": "^1.9"
+        "sweetrdf/easyrdf": "^1.10"
     },
     "autoload": {
         "psr-4": {

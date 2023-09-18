@@ -9,7 +9,7 @@ final class SemantizerTest extends TestCase
 {
     public function testExport(): void {
         $semantizer = new Semantizer();
-        $semantizer->setPrefix("dfc", "https://github.com/datafoodconsortium/ontology/releases/latest/download/DFC_BusinessOntology.owl#");
+        $semantizer->setPrefix("dfc-b", "https://github.com/datafoodconsortium/ontology/releases/latest/download/DFC_BusinessOntology.owl#");
 
         $context = ["https://www.datafoodconsortium.org"];
 
@@ -19,7 +19,7 @@ final class SemantizerTest extends TestCase
             semanticType: "foaf:Person"
         );
         $so->addSemanticPropertyLiteral("foaf:name", "Joe");
-        $so->addSemanticPropertyLiteral("dfc:description", "Description");
+        $so->addSemanticPropertyLiteral("dfc-b:description", "Description");
 
         $so2 = new SemanticObject(
             semantizer: $semantizer, 

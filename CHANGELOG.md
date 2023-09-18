@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta2] - 2023-09-18
+
+### Fixed
+
+- Allow [hyphen in prefix](https://github.com/sweetrdf/easyrdf/issues/32).
+
+### Changed
+
+- Update sweetrdf/easyrdf to version 1.10.
+
 ## [1.0.0-beta1] - 2023-08-15
 
 ### Changed
@@ -70,7 +80,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-beta1...HEAD
+[unreleased]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-beta2...HEAD
+[1.0.0-beta2]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha1...v1.0.0-beta2
 [1.0.0-beta1]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha4...v1.0.0-beta1
 [1.0.0-alpha4]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha3...v1.0.0-alpha4
 [1.0.0-alpha3]: https://github.com/assemblee-virtuelle/semantizer-php/compare/v1.0.0-alpha2...v1.0.0-alpha3

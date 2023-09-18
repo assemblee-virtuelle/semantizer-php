@@ -20,4 +20,5 @@ chmod +x phpunit.phar
 
 Run the tests with:
 ```
-docker run -it --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:8.2-cli ./phpunit.phar test/```
+docker run -it --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:8.2-cli ./phpunit.phar test/
+```
